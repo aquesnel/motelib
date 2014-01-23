@@ -141,23 +141,22 @@ public class DevicesActivity extends ListActivity {
     }
 
     protected void onDeviceContextSelected(Device device, int menuItemId) {
-        switch (menuItemId) {
-        case R.id.edit:
-            Intent intent = new Intent(this, AddDeviceActivity.class);
-            intent.putExtra("device_id", device.id);
-            startActivity(intent);          
-            return;
-        case R.id.delete:
-            try {
+        if (menuItemId == R.id.edit) {
+			Intent intent = new Intent(this, AddDeviceActivity.class);
+			intent.putExtra("device_id", device.id);
+			startActivity(intent);
+			return;
+		} else if (menuItemId == R.id.delete) {
+			try {
                 moteContext.getDeviceDao().removeDevice(device);
             } catch (Exception e) {
                 e.printStackTrace();
                 alert("Error", "An error occured while deleting the "+moteContext.getDeviceWord(null, false, false)+":\n"+e.getMessage(), null);
                 return;
             }
-            adapter.loadFromDao();
-            return;
-        }
+			adapter.loadFromDao();
+			return;
+		}
     }
     
     protected void onAddNewDevice() {
